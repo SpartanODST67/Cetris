@@ -4,16 +4,25 @@
 #define ROWS 21
 #define COLUMNS 13
 
-int initialize();
-int initializeBoard();
+int initialize(char board[ROWS][COLUMNS]);
+int initializeBoard(char board[ROWS][COLUMNS]);
+int drawBoard(char board[ROWS][COLUMNS]);
 
 int main() {
     char board[ROWS][COLUMNS];
+    int score = 0;
 
     initialize(board);
 
     for(int i = 0; i < ROWS; i++) {
-        printf("%s\n", board[i]);
+        printf("%s", board[i]);
+        if(i == 0)
+            printf("%6s%s", " ", "Next: |----|");
+        if(i >= 1 && i <= 3) 
+            printf("%12s%s", " ", "|----|");
+        if(i == 5)
+            printf("%6s%s %d", " ", "Score:", score);
+        printf("\n");
     }
 
     return 0;
