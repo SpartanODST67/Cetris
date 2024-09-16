@@ -6,7 +6,7 @@
 
 int initialize(char board[ROWS][COLUMNS]);
 int initializeBoard(char board[ROWS][COLUMNS]);
-int drawBoard(char board[ROWS][COLUMNS]);
+int drawBoard(char board[ROWS][COLUMNS], int score);
 
 int main() {
     char board[ROWS][COLUMNS];
@@ -14,16 +14,7 @@ int main() {
 
     initialize(board);
 
-    for(int i = 0; i < ROWS; i++) {
-        printf("%s", board[i]);
-        if(i == 0)
-            printf("%6s%s", " ", "Next: |----|");
-        if(i >= 1 && i <= 3) 
-            printf("%12s%s", " ", "|----|");
-        if(i == 5)
-            printf("%6s%s %d", " ", "Score:", score);
-        printf("\n");
-    }
+    drawBoard(board, score);
 
     return 0;
 }
@@ -60,4 +51,17 @@ int initializeBoard(char board[ROWS][COLUMNS]) {
     }
 
     return 0;
+}
+
+int drawBoard(char board[ROWS][COLUMNS], int score) {
+    for(int i = 0; i < ROWS; i++) {
+        printf("%s", board[i]);
+        if(i == 0)
+            printf("%6s%s", " ", "Next: |----|");
+        if(i >= 1 && i <= 3) 
+            printf("%12s%s", " ", "|----|");
+        if(i == 5)
+            printf("%6s%s %d", " ", "Score:", score);
+        printf("\n");
+    }
 }
