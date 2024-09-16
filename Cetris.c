@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <strings.h>
+#include <windows.h>
 
 #define ROWS 21
 #define COLUMNS 13
+#define TIC_RATE 1/35
 
 int initialize(char board[ROWS][COLUMNS]);
 int initializeBoard(char board[ROWS][COLUMNS]);
@@ -14,7 +17,12 @@ int main() {
 
     initialize(board);
 
-    drawBoard(board, score);
+    while(1) {
+        printf("\e[1;1H\e[2J"); //Clear screen;
+        drawBoard(board, score);
+        score++;
+        Sleep(TIC_RATE * 1000);
+    }
 
     return 0;
 }
