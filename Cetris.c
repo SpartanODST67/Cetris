@@ -9,7 +9,7 @@
 
 #define ROWS 21
 #define COLUMNS 13
-#define TIC_RATE 1
+#define TIC_RATE 0.25f
 
 int initialize(char board[ROWS][COLUMNS]);
 void initializePieces();
@@ -22,10 +22,8 @@ void initializeS();
 void initializeI();
 int initializeBoard(char board[ROWS][COLUMNS]);
 int drawBoard(char board[ROWS][COLUMNS], int score);
-//bool movePiece(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
-bool movePiece(char board[ROWS][COLUMNS], Vector2* piece);
-//bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
-bool canMove(char board[ROWS][COLUMNS], Vector2 piece);
+bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector);
+bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
 
 int main() {
     char board[ROWS][COLUMNS];
@@ -35,15 +33,20 @@ int main() {
     blockSpawnPoint.y = 1;
     bool spawnedBlock = false;
 
-    Vector2 tempBlock = blockSpawnPoint;
+    const Vector2 down = {0, 1};
+
+    Piece currentPiece;
 
     initialize(board);
 
     while(1) {
         printf("\e[1;1H\e[2J"); //Clear screen;
         if(!spawnedBlock) {
-            tempBlock = blockSpawnPoint;
-            board[tempBlock.y][tempBlock.x] = 'X';
+            currentPiece = oPiece;
+            currentPiece.center = blockSpawnPoint;
+            for(int i = 0; i < 4; i++) {
+                board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'X';
+            }
             spawnedBlock = true;
         }
         else {
@@ -218,28 +221,27 @@ int drawBoard(char board[ROWS][COLUMNS], int score) {
     }
 }
 
-/*int movePiece(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector) {
-
-}*/
-
-//Only here for simple tests.
-bool movePiece(char board[ROWS][COLUMNS], Vector2* piece) {
-    if(canMove(board, *piece))
-    {
-        board[piece->y][piece->x] = ' ';
-        piece->y = (piece->y) + 1;
-        board[piece->y][piece->x] = 'X';
+bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector) {
+    if(canMove(board, *piece, movementVector)) {
+        for(int i = 0; i < 4; i++) {
+            board[piece->center.y + piece->squares[i].y][piece->center.x + piece->squares[i].x] = ' ';
+        }
+        piece->center.x += movementVector.x;
+        piece->center.y += movementVector.y;
+        for(int i = 0; i < 4; i++) {
+            board[piece->center.y + piece->squares[i].y][piece->center.x + piece->squares[i].x] = 'X';
+        }
         return true;
     }
     return false;
 }
 
-/*bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector) {
-
-}*/
-
-bool canMove(char board[ROWS][COLUMNS], Vector2 piece) {
-    if(board[piece.y + 1][piece.x] != ' ')
-        return false;
+bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector) {
+    for(int i = 0; i < 4; i++) {
+        if(board[piece.center.y + piece.squares[i].y + movementVector.y][piece.center.x + piece.squares[i].x + movementVector.x] != ' ') {
+            if(board[piece.center.y + piece.squares[i].y + movementVector.y][piece.center.x + piece.squares[i].x + movementVector.x] != 'X')
+                return false;   
+        }
+    }
     return true;
 }
