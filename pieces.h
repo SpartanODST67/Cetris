@@ -13,7 +13,8 @@ typedef struct Piece {
 
 Piece oPiece;
 Piece lPiece;
-Piece reverseLPiece;
+Piece rLPiece;
+Piece tPiece;
 Piece zPiece;
 Piece sPiece;
 Piece iPiece;
