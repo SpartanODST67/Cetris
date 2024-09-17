@@ -16,11 +16,19 @@ int drawBoard(char board[ROWS][COLUMNS], int score);
 int main() {
     char board[ROWS][COLUMNS];
     int score = 0;
+    vector2 blockSpawnPoint;
+    blockSpawnPoint.x = (COLUMNS - 2) / 2;
+    blockSpawnPoint.y = 0;
+    bool spawnedBlock = false;
+
 
     initialize(board);
 
     while(1) {
         //printf("\e[1;1H\e[2J"); //Clear screen;
+        if(!spawnedBlock) {
+            board[blockSpawnPoint.y][blockSpawnPoint.x] = 'X';
+        }
         drawBoard(board, score);
         score++;
         Sleep(TIC_RATE * 1000);
