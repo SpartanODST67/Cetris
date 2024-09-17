@@ -3,16 +3,16 @@
 
 #include "vector2.h"
 
-typedef struct piece {
-    vector2 center;
-    vector2 squares[4];
-} piece;
+typedef struct Piece {
+    Vector2 center;
+    Vector2 squares[4];
+} Piece;
 
-piece O;
-piece L;
-piece reverseL;
-piece z;
-piece s;
-piece i;
+Piece O;
+Piece L;
+Piece reverseL;
+Piece z;
+Piece s;
+Piece i;
 
 #endif
