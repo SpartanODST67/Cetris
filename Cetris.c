@@ -47,8 +47,12 @@ int main() {
             spawnedBlock = true;
         }
         else {
-            if(!movePiece(board, &tempBlock))
+            if(!movePiece(board, &currentPiece, down)) {
+                for(int i = 0; i < 4; i++) {
+                    board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'Z';
+                }
                 spawnedBlock = false;
+            }
         }
         drawBoard(board, score);
         score++;
