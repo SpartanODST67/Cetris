@@ -9,11 +9,15 @@
 
 #define ROWS 21
 #define COLUMNS 13
-#define TIC_RATE 1/35
+#define TIC_RATE 1
 
 int initialize(char board[ROWS][COLUMNS]);
 int initializeBoard(char board[ROWS][COLUMNS]);
 int drawBoard(char board[ROWS][COLUMNS], int score);
+//bool movePiece(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
+bool movePiece(char board[ROWS][COLUMNS], Vector2* piece);
+//bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
+bool canMove(char board[ROWS][COLUMNS], Vector2 piece);
 
 int main() {
     char board[ROWS][COLUMNS];
@@ -23,14 +27,22 @@ int main() {
     blockSpawnPoint.y = 0;
     bool spawnedBlock = false;
 
+    Vector2 tempBlock = blockSpawnPoint;
 
     initialize(board);
 
     while(1) {
-        //printf("\e[1;1H\e[2J"); //Clear screen;
+        printf("\e[1;1H\e[2J"); //Clear screen;
         if(!spawnedBlock) {
-            board[blockSpawnPoint.y][blockSpawnPoint.x] = 'X';
+            tempBlock = blockSpawnPoint;
+            board[tempBlock.y][tempBlock.x] = 'X';
+            spawnedBlock = true;
         }
+        else {
+            if(!movePiece(board, &tempBlock))
+                spawnedBlock = false;
+        }
+        printf("%d %d\n", tempBlock.x, tempBlock.y);
         drawBoard(board, score);
         score++;
         Sleep(TIC_RATE * 1000);
@@ -84,4 +96,30 @@ int drawBoard(char board[ROWS][COLUMNS], int score) {
             printf("%6s%s %d", " ", "Score:", score);
         printf("\n");
     }
+}
+
+/*int movePiece(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector) {
+
+}*/
+
+//Only here for simple tests.
+bool movePiece(char board[ROWS][COLUMNS], Vector2* piece) {
+    if(canMove(board, *piece))
+    {
+        board[piece->y][piece->x] = ' ';
+        piece->y = (piece->y) + 1;
+        board[piece->y][piece->x] = 'X';
+        return true;
+    }
+    return false;
+}
+
+/*bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector) {
+
+}*/
+
+bool canMove(char board[ROWS][COLUMNS], Vector2 piece) {
+    if(board[piece.y + 1][piece.x] != ' ')
+        return false;
+    return true;
 }
