@@ -8,11 +8,11 @@ typedef struct Piece {
     Vector2 squares[4];
 } Piece;
 
-Piece O;
-Piece L;
-Piece reverseL;
-Piece z;
-Piece s;
-Piece i;
+Piece oPiece;
+Piece lPiece;
+Piece reverseLPiece;
+Piece zPiece;
+Piece sPiece;
+Piece iPiece;
 
 #endif
