@@ -19,4 +19,13 @@ Piece zPiece;
 Piece sPiece;
 Piece iPiece;
 
+void initializePieces();
+void initializeO();
+void initializeL();
+void initializeRL();
+void initializeT();
+void initializeZ();
+void initializeS();
+void initializeI();
+
 #endif
