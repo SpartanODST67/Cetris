@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <windows.h>
+#include <stdbool.h>
+#include "vector2.h"
 
 #define ROWS 21
 #define COLUMNS 13
@@ -18,7 +20,7 @@ int main() {
     initialize(board);
 
     while(1) {
-        printf("\e[1;1H\e[2J"); //Clear screen;
+        //printf("\e[1;1H\e[2J"); //Clear screen;
         drawBoard(board, score);
         score++;
         Sleep(TIC_RATE * 1000);
