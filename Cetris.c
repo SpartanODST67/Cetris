@@ -3,7 +3,9 @@
 #include <strings.h>
 #include <windows.h>
 #include <stdbool.h>
+
 #include "vector2.h"
+#include "pieces.h"
 
 #define ROWS 21
 #define COLUMNS 13
