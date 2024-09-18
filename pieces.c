@@ -11,6 +11,9 @@ void initializePieces() {
 }
 
 void initializeO() {
+    oPiece.center.x = 0;
+    oPiece.center.y = 0;
+
     oPiece.squares[0].x = 0;
     oPiece.squares[0].y = 0;
 
@@ -25,6 +28,9 @@ void initializeO() {
 }
 
 void initializeL() {
+    lPiece.center.x = 0;
+    lPiece.center.y = 0;
+
     lPiece.squares[0].x = -1;
     lPiece.squares[0].y = 0;
 
@@ -39,6 +45,9 @@ void initializeL() {
 }
 
 void initializeRL() {
+    rLPiece.center.x = 0;
+    rLPiece.center.y = 0;
+
     rLPiece.squares[0].x = -1;
     rLPiece.squares[0].y = -1;
 
@@ -53,6 +62,9 @@ void initializeRL() {
 }
 
 void initializeT() {
+    tPiece.center.x = 0;
+    tPiece.center.y = 0;
+
     tPiece.squares[0].x = 0;
     tPiece.squares[0].y = 0;
 
@@ -67,6 +79,9 @@ void initializeT() {
 }
 
 void initializeZ() {
+    zPiece.center.x = 0;
+    zPiece.center.y = 0;
+
     zPiece.squares[0].x = -1;
     zPiece.squares[0].y = -1;
 
@@ -81,6 +96,9 @@ void initializeZ() {
 }
 
 void initializeS() {
+    sPiece.center.x = 0;
+    sPiece.center.y = 0;
+
     sPiece.squares[0].x = -1;
     sPiece.squares[0].y = 0;
 
@@ -95,6 +113,9 @@ void initializeS() {
 }
 
 void initializeI() {
+    iPiece.center.x = 0;
+    iPiece.center.y = 0;
+
     iPiece.squares[0].x = -2;
     iPiece.squares[0].y = -1;
 
