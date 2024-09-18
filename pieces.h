@@ -3,7 +3,7 @@
 
 #include "vector2.h"
 
-typedef enum PieceType { O, L, RL, Z, S, I} PieceType;
+typedef enum PieceType { O, L, RL, Z, S, I, T} PieceType;
 
 typedef struct Piece {
     Vector2 center;
