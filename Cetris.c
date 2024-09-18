@@ -26,15 +26,18 @@ int main() {
     bool spawnedBlock = false;
 
     const Vector2 down = {0, 1};
-
+    int directionInput;
+    Vector2 inputDirection;
+    Vector2 zero = {0, 0};
     Piece currentPiece;
 
     initialize(board);
 
     while(1) {
-        printf("\e[1;1H\e[2J"); //Clear screen;
+        //printf("\e[1;1H\e[2J"); //Clear screen;
+        inputDirection = zero;
         if(!spawnedBlock) {
-            currentPiece = oPiece;
+            currentPiece = zPiece;
             currentPiece.center = blockSpawnPoint;
             for(int i = 0; i < 4; i++) {
                 board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'X';
@@ -42,6 +45,16 @@ int main() {
             spawnedBlock = true;
         }
         else {
+            
+            //Move Piece left and right.
+            directionInput = getchar();
+            if(directionInput == 'a')
+                inputDirection.x = -1;
+            else if(directionInput == 'd')
+                inputDirection.x = 1;
+            movePiece(board, &currentPiece, inputDirection);
+
+            //Move piece down.
             if(!movePiece(board, &currentPiece, down)) {
                 for(int i = 0; i < 4; i++) {
                     board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'Z';
