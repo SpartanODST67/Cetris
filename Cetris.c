@@ -30,6 +30,8 @@ int main() {
     const Vector2 down = {0, 1};
     int directionInput;
     Vector2 inputDirection;
+    int rotationInput;
+    int inputRotation;
     Vector2 zero = {0, 0};
     Piece currentPiece;
 
@@ -40,7 +42,7 @@ int main() {
         
         //Spawn piece
         if(!spawnedBlock) {
-            currentPiece = iPiece;
+            currentPiece = lPiece;
             currentPiece.center = blockSpawnPoint;
             for(int i = 0; i < 4; i++) {
                 board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'X';
@@ -50,13 +52,19 @@ int main() {
         
         else {
             
-            rotatePiece(board, &currentPiece, -1);
+            inputRotation = 0;
+            rotationInput = getchar();
+            if(rotationInput == 'q')
+                inputRotation = -1;
+            else if(rotationInput == 'e')
+                inputRotation = 1;
+            rotatePiece(board, &currentPiece, inputRotation);
 
             inputDirection = zero;
             //Move Piece left and right.
             directionInput = getchar();
             if(directionInput == 'a')
-                inputDirection.x = 1;
+                inputDirection.x = -1;
             else if(directionInput == 'd')
                 inputDirection.x = 1;
             movePiece(board, &currentPiece, inputDirection);
