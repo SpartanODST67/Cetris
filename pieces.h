@@ -18,6 +18,7 @@ Piece tPiece;
 Piece zPiece;
 Piece sPiece;
 Piece iPiece;
+Piece pieces[7];
 
 void initializePieces();
 void initializeO();

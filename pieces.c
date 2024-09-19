@@ -8,6 +8,13 @@ void initializePieces() {
     initializeZ();
     initializeS();
     initializeI();
+    pieces[0] = oPiece;
+    pieces[1] = lPiece;
+    pieces[2] = rLPiece;
+    pieces[3] = tPiece;
+    pieces[4] = zPiece;
+    pieces[5] = sPiece;
+    pieces[6] = iPiece;
 }
 
 void initializeO() {
