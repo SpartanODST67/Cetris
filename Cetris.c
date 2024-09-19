@@ -16,6 +16,8 @@ int initializeBoard(char board[ROWS][COLUMNS]);
 int drawBoard(char board[ROWS][COLUMNS], int score);
 bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector);
 bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
+bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection);
+bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection);
 
 int main() {
     char board[ROWS][COLUMNS];
@@ -35,21 +37,26 @@ int main() {
 
     while(1) {
         //printf("\e[1;1H\e[2J"); //Clear screen;
-        inputDirection = zero;
+        
+        //Spawn piece
         if(!spawnedBlock) {
-            currentPiece = zPiece;
+            currentPiece = iPiece;
             currentPiece.center = blockSpawnPoint;
             for(int i = 0; i < 4; i++) {
                 board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'X';
             }
             spawnedBlock = true;
         }
+        
         else {
             
+            rotatePiece(board, &currentPiece, -1);
+
+            inputDirection = zero;
             //Move Piece left and right.
             directionInput = getchar();
             if(directionInput == 'a')
-                inputDirection.x = -1;
+                inputDirection.x = 1;
             else if(directionInput == 'd')
                 inputDirection.x = 1;
             movePiece(board, &currentPiece, inputDirection);
@@ -63,7 +70,6 @@ int main() {
             }
         }
         drawBoard(board, score);
-        score++;
         Sleep(TIC_RATE * 1000);
     }
 
@@ -138,6 +144,72 @@ bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector) {
         if(board[piece.center.y + piece.squares[i].y + movementVector.y][piece.center.x + piece.squares[i].x + movementVector.x] != ' ') {
             if(board[piece.center.y + piece.squares[i].y + movementVector.y][piece.center.x + piece.squares[i].x + movementVector.x] != 'X')
                 return false;   
+        }
+    }
+    return true;
+}
+
+bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection) {
+    if(rotationDirection == 0) //No rotation.
+        return true;
+    
+    if(piece->pieceType == O) //The O piece doesn't rotate.
+        return true;
+    
+    if(canRotate(board, *piece, rotationDirection)) {
+        for(int i = 0; i < 4; i++) {
+            board[piece->center.y + piece->squares[i].y][piece->center.x + piece->squares[i].x] = ' ';
+        }
+        
+        if(rotationDirection > 0) {
+            for(int i = 0; i < 4; i++) {
+                int temp = piece->squares[i].x;
+                piece->squares[i].x = piece->squares[i].y * -1;
+                piece->squares[i].y = temp;
+            }
+        }
+        else {
+            for(int i = 0; i < 4; i++) {
+                int temp = piece->squares[i].x;
+                piece->squares[i].x = piece->squares[i].y;
+                piece->squares[i].y = temp * -1;
+            }
+        }
+
+        for(int i = 0; i < 4; i++) {
+            board[piece->center.y + piece->squares[i].y][piece->center.x + piece->squares[i].x] = 'X';
+        }
+        return true;
+    }
+    return false;
+}
+
+bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection) {
+    if(rotationDirection == 0) //If you're not going to rotate, why are your calling this?
+        return false;
+    
+    if(rotationDirection > 0) {
+        for(int i = 0; i < 4; i++) {
+            int temp = piece.squares[i].x;
+            piece.squares[i].x = piece.squares[i].y * -1;
+            piece.squares[i].y = temp;
+            char targetPosition = board[piece.center.y + piece.squares[i].y][piece.center.x + piece.squares[i].x];
+            if(targetPosition != 'X') {
+                if(targetPosition != ' ')
+                    return false;
+            }
+        }
+    }
+    else {
+        for(int i = 0; i < 4; i++) {
+            int temp = piece.squares[i].x;
+            piece.squares[i].x = piece.squares[i].y;
+            piece.squares[i].y = temp * -1;
+            char targetPosition = board[piece.center.y + piece.squares[i].y][piece.center.x + piece.squares[i].x];
+            if(targetPosition != 'X') {
+                if(targetPosition != ' ')
+                    return false;
+            }
         }
     }
     return true;
