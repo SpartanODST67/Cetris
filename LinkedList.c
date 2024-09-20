@@ -8,11 +8,10 @@ LinkedList createLinkedList() {
 }
 
 void destroyLinkedList(LinkedList* list) {
-    Node* temp = list->head->next;
     while(list->head != NULL) {
-        free(list->head);
-        list->head = temp;
-        temp = list->head->next;
+        Node* temp = list->head;
+        list->head = list->head->next;
+        free(temp);
     }
 
     list->tail = NULL;
