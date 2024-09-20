@@ -6,6 +6,7 @@
 
 #include "vector2.h"
 #include "pieces.h"
+#include "LinkedList.h"
 
 #define ROWS 21
 #define COLUMNS 13
@@ -20,6 +21,11 @@ bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection)
 bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection);
 
 int main() {
+    LinkedList pieceOrder = createLinkedList();
+    for(int i = 0; i < 7; i++) {
+        addNodeByValue(&pieceOrder, i);
+    }
+
     char board[ROWS][COLUMNS];
     int score = 0;
     Vector2 blockSpawnPoint;
@@ -42,7 +48,12 @@ int main() {
         
         //Spawn piece
         if(!spawnedBlock) {
-            currentPiece = lPiece;
+            Node* nextIndex = getNextNode(&pieceOrder);
+            if(nextIndex == NULL) {
+                shuffleList(&pieceOrder);
+                nextIndex = getNextNode(&pieceOrder);
+            }
+            currentPiece = pieces[nextIndex->value];
             currentPiece.center = blockSpawnPoint;
             for(int i = 0; i < 4; i++) {
                 board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'X';
@@ -81,6 +92,7 @@ int main() {
         Sleep(TIC_RATE * 1000);
     }
 
+    destroyLinkedList(&pieceOrder);
     return 0;
 }
 
