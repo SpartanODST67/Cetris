@@ -40,6 +40,12 @@ int main() {
     int inputRotation;
     Vector2 zero = {0, 0};
     Node* nextIndex = getNextNode(&pieceOrder);
+    if(nextIndex == NULL) {
+        destroyLinkedList(&pieceOrder);
+        fprintf(stderr, "Failed to get node from linked list.\n");
+        return -1;
+    }
+
     Piece nextPiece = pieces[nextIndex->value];
     Piece currentPiece;
 
@@ -55,6 +61,11 @@ int main() {
             if(nextIndex == NULL) {
                 shuffleList(&pieceOrder);
                 nextIndex = getNextNode(&pieceOrder);
+                if(nextIndex == NULL) {
+                    fprintf(stderr, "Failed to get node midgame.\n");
+                    destroyLinkedList(&pieceOrder);
+                    return -1;
+                }
             }
             nextPiece = pieces[nextIndex->value];
             currentPiece.center = blockSpawnPoint;
