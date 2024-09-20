@@ -69,6 +69,8 @@ void shuffleList(LinkedList* list) {
             }
         }
     }
+
+    list->current = list->head;
 }
 
 void printList(LinkedList* list) {
