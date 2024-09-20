@@ -39,6 +39,8 @@ int main() {
     int rotationInput;
     int inputRotation;
     Vector2 zero = {0, 0};
+    Node* nextIndex = getNextNode(&pieceOrder);
+    Piece nextPiece = pieces[nextIndex->value];
     Piece currentPiece;
 
     initialize(board);
@@ -48,12 +50,13 @@ int main() {
         
         //Spawn piece
         if(!spawnedBlock) {
-            Node* nextIndex = getNextNode(&pieceOrder);
+            currentPiece = nextPiece;
+            nextIndex = getNextNode(&pieceOrder);
             if(nextIndex == NULL) {
                 shuffleList(&pieceOrder);
                 nextIndex = getNextNode(&pieceOrder);
             }
-            currentPiece = pieces[nextIndex->value];
+            nextPiece = pieces[nextIndex->value];
             currentPiece.center = blockSpawnPoint;
             for(int i = 0; i < 4; i++) {
                 board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'X';
