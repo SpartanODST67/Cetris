@@ -51,3 +51,31 @@ Node* getNextNode(LinkedList* list) {
 
     return current; 
 }
+
+void shuffleList(LinkedList* list) {
+    Node* current = list->head->next;
+    list->head->next = current->next;
+    current->next = list->head;
+    list->head = current;
+
+    for(int i = 0; i < 10; i++) {
+        for(; current->next->next != NULL; current = current->next) {
+            if(rand() % 2 == 0) {
+                Node* n1 = current->next;
+                Node* n2 = current->next->next;
+                n1->next = n2->next;
+                n2->next = n1;
+                current->next = n2;
+            }
+        }
+    }
+}
+
+void printList(LinkedList* list) {
+    Node* current = list->head;
+    while(current != NULL) {
+        printf("%d ", current->value);
+        current = current->next;
+    }
+    printf("\n");
+}
