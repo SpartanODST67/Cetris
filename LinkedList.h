@@ -2,7 +2,7 @@
 #define LINKEDLIST_H
 
 typedef struct Node {
-    int index;
+    int value;
     struct Node* next;
 } Node;
 
@@ -11,5 +11,12 @@ typedef struct LinkedList {
     Node* current;
     Node* tail;
 } LinkedList;
+
+LinkedList createLinkedList();
+void destroyLinkedList(LinkedList* list);
+void addNode(LinkedList* list, Node* newNode);
+Node* getNextNode(LinkedList* list);
+void shuffleList(LinkedList* list);
+void printList(LinkedList* list);
 
 #endif
