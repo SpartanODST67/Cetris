@@ -15,6 +15,7 @@ typedef struct LinkedList {
 LinkedList createLinkedList();
 void destroyLinkedList(LinkedList* list);
 void addNode(LinkedList* list, Node* newNode);
+void addNodeByValue(LinkedList* list, int value);
 Node* getNextNode(LinkedList* list);
 void shuffleList(LinkedList* list);
 void printList(LinkedList* list);
