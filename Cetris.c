@@ -23,6 +23,7 @@ bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector);
 bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
 bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection);
 bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection);
+int rotate(Piece* piece, int rotationDirection);
 bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece);
 bool isPositionTaken(char board[ROWS][COLUMNS], Vector2 targetPosition);
 
@@ -237,20 +238,7 @@ bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection)
             board[piece->center.y + piece->squares[i].y][piece->center.x + piece->squares[i].x] = ' ';
         }
         
-        if(rotationDirection > 0) {
-            for(int i = 0; i < 4; i++) {
-                int temp = piece->squares[i].x;
-                piece->squares[i].x = piece->squares[i].y * -1;
-                piece->squares[i].y = temp;
-            }
-        }
-        else {
-            for(int i = 0; i < 4; i++) {
-                int temp = piece->squares[i].x;
-                piece->squares[i].x = piece->squares[i].y;
-                piece->squares[i].y = temp * -1;
-            }
-        }
+        rotate(piece, rotationDirection);
 
         for(int i = 0; i < 4; i++) {
             board[piece->center.y + piece->squares[i].y][piece->center.x + piece->squares[i].x] = 'X';
@@ -289,6 +277,30 @@ bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection) {
         }
     }
     return true;
+}
+
+int rotate(Piece* piece, int rotationDirection) {
+    if(rotationDirection == 0) //No rotation.
+        return -1;
+    
+    if(piece->pieceType == O) //The O piece doesn't rotate.
+        return 0;
+    
+    if(rotationDirection > 0) {
+        for(int i = 0; i < 4; i++) {
+            int temp = piece->squares[i].x;
+            piece->squares[i].x = piece->squares[i].y * -1;
+            piece->squares[i].y = temp;
+        }
+    }
+    else {
+        for(int i = 0; i < 4; i++) {
+            int temp = piece->squares[i].x;
+            piece->squares[i].x = piece->squares[i].y;
+            piece->squares[i].y = temp * -1;
+        }
+    }
+    return 0;
 }
 
 bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece) {
