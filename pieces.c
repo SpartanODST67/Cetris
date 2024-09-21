@@ -135,16 +135,16 @@ void initializeI() {
     iPiece.center.x = 0;
     iPiece.center.y = 0;
 
-    iPiece.squares[0].x = -2;
+    iPiece.squares[0].x = -1;
     iPiece.squares[0].y = -1;
 
-    iPiece.squares[1].x = -1;
+    iPiece.squares[1].x = 0;
     iPiece.squares[1].y = -1;
 
-    iPiece.squares[2].x = 0;
+    iPiece.squares[2].x = 1;
     iPiece.squares[2].y = -1;
 
-    iPiece.squares[3].x = 1;
+    iPiece.squares[3].x = 2;
     iPiece.squares[3].y = -1;
 
     iPiece.pieceType = I;
