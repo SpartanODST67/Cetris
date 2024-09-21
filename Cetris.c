@@ -26,6 +26,8 @@ bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection);
 int rotate(Piece* piece, int rotationDirection);
 bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece);
 bool isPositionTaken(char board[ROWS][COLUMNS], Vector2 targetPosition);
+int scorePoints(char board[ROWS][COLUMNS]);
+bool isFullLine(char line[COLUMNS]);
 
 int main() {
     LinkedList pieceOrder = createLinkedList();
@@ -62,7 +64,7 @@ int main() {
     nextPiece = pieces[nextIndex->value];
 
     while(1) {
-        printf("\e[1;1H\e[2J"); //Clear screen;
+        //printf("\e[1;1H\e[2J"); //Clear screen;
         
         //Spawn piece
         if(!spawnedBlock) {
@@ -92,6 +94,7 @@ int main() {
         
         else {
             
+            //Player Input
             inputRotation = 0;
             inputDirection = zero;
             if(kbhit()) {
@@ -109,10 +112,11 @@ int main() {
             }
 
             //Move piece down.
-            if(!movePiece(board, &currentPiece, down)) {
+            if(!movePiece(board, &currentPiece, down)) { //Piece cannot be moved down.
                 for(int i = 0; i < 4; i++) {
                     board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'Z';
                 }
+                score += scorePoints(board);
                 spawnedBlock = false;
             }
         }
@@ -303,4 +307,41 @@ bool isPositionTaken(char board[ROWS][COLUMNS], Vector2 targetPosition) {
             return true;   
     }
     return false;
+}
+
+int scorePoints(char board[ROWS][COLUMNS]) {
+    int sequentialLines = 0;
+    int maxSequentialLines = 0;
+    for(int i = 0; i < ROWS - 1; i++) {
+        if(isFullLine(board[i])) {
+            sequentialLines++;
+            if(sequentialLines > maxSequentialLines)
+                maxSequentialLines = sequentialLines;
+        }
+        else 
+            sequentialLines = 0;
+    }
+
+    switch(maxSequentialLines) {
+        case 1:
+            return 100;
+        case 2:
+            return 300;
+        case 3:
+            return 500;
+        case 4:
+            return 800;
+        default:
+            return 0;
+    }
+}
+
+bool isFullLine(char line[COLUMNS]) {
+    for(int i = 0; i < COLUMNS; i++) {
+        if(line[i] == '|' || line[i] == '\\' || line[i] == '/' || line[i] == '-') //Ignore borders.
+            continue;
+        if(line[i] == ' ')
+            return false;
+    }
+    return true;
 }
