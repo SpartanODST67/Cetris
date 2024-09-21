@@ -18,7 +18,7 @@ int initialize(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NE
 int initializeBoard(char board[ROWS][COLUMNS]);
 int initializeNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS]);
 int updateNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], Piece piece);
-int drawBoard(char board[ROWS][COLUMNS], int score);
+int drawBoard(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], int score);
 bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector);
 bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
 bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection);
@@ -76,6 +76,7 @@ int main() {
                 }
             }
             nextPiece = pieces[nextIndex->value];
+            updateNextPreview(nextPreview, nextPiece);
             currentPiece.center = blockSpawnPoint;
             for(int i = 0; i < 4; i++) {
                 board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'X';
@@ -110,7 +111,7 @@ int main() {
                 spawnedBlock = false;
             }
         }
-        drawBoard(board, score);
+        drawBoard(board, nextPreview, score);
         Sleep(TIC_RATE * 1000);
     }
 
@@ -172,13 +173,20 @@ int updateNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], Pi
     return 0;
 }
 
-int drawBoard(char board[ROWS][COLUMNS], int score) {
+int drawBoard(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], int score) {
+    int nextPreviewRow = 0;
     for(int i = 0; i < ROWS; i++) {
         printf("%s", board[i]);
-        if(i == 0)
-            printf("%6s%s", " ", "Next: |----|");
-        if(i >= 1 && i <= 3) 
-            printf("%12s%s", " ", "|----|");
+        if(i == 0) {
+            printf("%6s", " ");
+            printf("Next: |%s|", nextPreview[nextPreviewRow]);
+            nextPreviewRow++;
+        }
+        if(i >= 1 && i <= 3) {
+            printf("%12s", " ");
+            printf("|%s|", nextPreview[nextPreviewRow]);
+            nextPreviewRow++;
+        }
         if(i == 5)
             printf("%6s%s %d", " ", "Score:", score);
         printf("\n");
