@@ -43,7 +43,7 @@ int main() {
     bool spawnedBlock = false;
 
     const Vector2 down = {0, 1};
-    int directionInput;
+    int playerInput;
     Vector2 inputDirection;
     int inputRotation;
     Vector2 zero = {0, 0};
@@ -94,21 +94,20 @@ int main() {
         else {
             
             inputRotation = 0;
-            rotationInput = getchar();
-            if(rotationInput == 'q')
-                inputRotation = -1;
-            else if(rotationInput == 'e')
-                inputRotation = 1;
-            rotatePiece(board, &currentPiece, inputRotation);
-
             inputDirection = zero;
-            //Move Piece left and right.
-            directionInput = getchar();
-            if(directionInput == 'a')
-                inputDirection.x = -1;
-            else if(directionInput == 'd')
-                inputDirection.x = 1;
-            movePiece(board, &currentPiece, inputDirection);
+            if(kbhit()) {
+                playerInput = getch();
+                if(playerInput == 'q')
+                    inputRotation = -1;
+                else if(playerInput == 'e')
+                    inputRotation = 1;
+                else if(playerInput == 'a')
+                    inputDirection.x = -1;
+                else if(playerInput == 'd')
+                    inputDirection.x = 1;
+                rotatePiece(board, &currentPiece, inputRotation);
+                movePiece(board, &currentPiece, inputDirection);
+            }
 
             //Move piece down.
             if(!movePiece(board, &currentPiece, down)) {
