@@ -23,6 +23,7 @@ bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector);
 bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
 bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection);
 bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection);
+bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece);
 
 int main() {
     LinkedList pieceOrder = createLinkedList();
@@ -78,6 +79,10 @@ int main() {
             nextPiece = pieces[nextIndex->value];
             updateNextPreview(nextPreview, nextPiece);
             currentPiece.center = blockSpawnPoint;
+            if(!canSpawnPiece(board, currentPiece)) {
+                drawBoard(board, nextPreview, score);
+                break;
+            }
             for(int i = 0; i < 4; i++) {
                 board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'X';
             }
@@ -279,6 +284,16 @@ bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection) {
                 if(targetPosition != ' ')
                     return false;
             }
+        }
+    }
+    return true;
+}
+
+bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece) {
+    for(int i = 0; i < 4; i++) {
+        if(board[piece.center.y + piece.squares[i].y][piece.center.x + piece.squares[i].x] != ' ') {
+            if(board[piece.center.y + piece.squares[i].y][piece.center.x + piece.squares[i].x] != 'X')
+                return false;
         }
     }
     return true;
