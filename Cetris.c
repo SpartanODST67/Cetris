@@ -16,6 +16,7 @@
 
 int initialize(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS]);
 int initializeBoard(char board[ROWS][COLUMNS]);
+int initializeRow(char row[COLUMNS]);
 int initializeNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS]);
 int updateNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], Piece piece);
 int drawBoard(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], int score);
@@ -138,14 +139,7 @@ int initialize(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NE
 int initializeBoard(char board[ROWS][COLUMNS]) {
     for(int i = 0; i < ROWS; i++) {
         if(i < ROWS - 1) {                      //Regular Rows
-            for(int j = 0; j < COLUMNS; j++) {
-                if(j == 0 || j == COLUMNS - 2)
-                    board[i][j] = '|';
-                else if(j == COLUMNS - 1)
-                    board[i][j] = '\0';
-                else
-                    board[i][j] = ' ';
-            }
+            initializeRow(board[i]);
         }
         else {                                  //Bottom Row
             for(int k = 0; k < COLUMNS; k++) {
@@ -161,6 +155,18 @@ int initializeBoard(char board[ROWS][COLUMNS]) {
         }
     }
 
+    return 0;
+}
+
+int initializeRow(char row[COLUMNS]) {
+    for(int j = 0; j < COLUMNS; j++) {
+        if(j == 0 || j == COLUMNS - 2)
+            row[j] = '|';
+        else if(j == COLUMNS - 1)
+            row[j] = '\0';
+        else
+            row[j] = ' ';
+    }
     return 0;
 }
 
