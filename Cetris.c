@@ -19,7 +19,7 @@ int initializeBoard(char board[ROWS][COLUMNS]);
 int initializeRow(char row[COLUMNS]);
 int initializeNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS]);
 int updateNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], Piece piece);
-int drawBoard(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], int score);
+int drawBoard(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], int score, int level);
 bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector);
 bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
 bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection);
@@ -27,7 +27,7 @@ bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection);
 int rotate(Piece* piece, int rotationDirection);
 bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece);
 bool isPositionTaken(char board[ROWS][COLUMNS], Vector2 targetPosition);
-int scorePoints(char board[ROWS][COLUMNS]);
+int scorePoints(char board[ROWS][COLUMNS], int* clearedLines);
 bool isFullLine(char line[COLUMNS]);
 int swapRows(char firstRow[COLUMNS], char secondRow[COLUMNS]);
 
@@ -45,7 +45,10 @@ int main() {
     blockSpawnPoint.y = 1;
     bool spawnedBlock = false;
     u_int ticks = 0;
-    int dropTick = 20;
+    int dropTicks[] = {15, 12, 10, 7, 5, 3, 1};
+    int level = 0;
+    int dropTick = dropTicks[level];
+    u_int clearedLines = 0;
 
     const Vector2 down = {0, 1};
     int playerInput;
@@ -87,7 +90,7 @@ int main() {
             updateNextPreview(nextPreview, nextPiece);
             currentPiece.center = blockSpawnPoint;
             if(!canSpawnPiece(board, currentPiece)) {
-                drawBoard(board, nextPreview, score);
+                drawBoard(board, nextPreview, score, level);
                 break;
             }
             for(int i = 0; i < 4; i++) {
@@ -116,16 +119,20 @@ int main() {
             }
 
             //Move piece down.
-            if(ticks % dropTick == 0)
+            if(ticks % dropTick == 0) {
                 if(!movePiece(board, &currentPiece, down)) { //Piece cannot be moved down.
                     for(int i = 0; i < 4; i++) {
                         board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'Z';
                     }
-                    score += scorePoints(board);
+                    score += scorePoints(board, &clearedLines);
+                    level = clearedLines / 10;
+                    if(level < 7)
+                        dropTick = dropTicks[level];
                     spawnedBlock = false;
+                }
             }
         }
-        drawBoard(board, nextPreview, score);
+        drawBoard(board, nextPreview, score, level);
         Sleep(TIC_RATE * 1000);
         ticks++;
     }
@@ -193,7 +200,7 @@ int updateNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], Pi
     return 0;
 }
 
-int drawBoard(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], int score) {
+int drawBoard(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], int score, int level) {
     int nextPreviewRow = 0;
     for(int i = 0; i < ROWS; i++) {
         printf("%s", board[i]);
@@ -209,6 +216,8 @@ int drawBoard(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEX
         }
         if(i == 5)
             printf("%6s%s %d", " ", "Score:", score);
+        if(i == 6)
+            printf("%6s%s %d", " ", "Level:", level + 1);
         printf("\n");
     }
 }
@@ -320,11 +329,12 @@ bool isPositionTaken(char board[ROWS][COLUMNS], Vector2 targetPosition) {
     return false;
 }
 
-int scorePoints(char board[ROWS][COLUMNS]) {
+int scorePoints(char board[ROWS][COLUMNS], int* clearedLines) {
     int sequentialLines = 0;
     int maxSequentialLines = 0;
     for(int i = 0; i < ROWS - 1; i++) {
         if(isFullLine(board[i])) {
+            (*clearedLines)++;
             sequentialLines++;
             if(sequentialLines > maxSequentialLines)
                 maxSequentialLines = sequentialLines;
