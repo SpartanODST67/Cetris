@@ -24,6 +24,7 @@ bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
 bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection);
 bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection);
 bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece);
+bool isPositionTaken(char board[ROWS][COLUMNS], Vector2 targetPosition);
 
 int main() {
     LinkedList pieceOrder = createLinkedList();
@@ -297,4 +298,12 @@ bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece) {
         }
     }
     return true;
+}
+
+bool isPositionTaken(char board[ROWS][COLUMNS], Vector2 targetPosition) {
+    if(board[targetPosition.y][targetPosition.x] != ' ') {
+        if(board[targetPosition.y][targetPosition.x] != 'X')
+            return true;   
+    }
+    return false;
 }
