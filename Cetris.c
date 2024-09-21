@@ -323,6 +323,7 @@ int scorePoints(char board[ROWS][COLUMNS]) {
             sequentialLines++;
             if(sequentialLines > maxSequentialLines)
                 maxSequentialLines = sequentialLines;
+            initializeRow(board[i]);
         }
         else 
             sequentialLines = 0;
