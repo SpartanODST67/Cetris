@@ -29,6 +29,7 @@ bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece);
 bool isPositionTaken(char board[ROWS][COLUMNS], Vector2 targetPosition);
 int scorePoints(char board[ROWS][COLUMNS]);
 bool isFullLine(char line[COLUMNS]);
+int swapRows(char firstRow[COLUMNS], char secondRow[COLUMNS]);
 
 int main() {
     LinkedList pieceOrder = createLinkedList();
@@ -324,6 +325,10 @@ int scorePoints(char board[ROWS][COLUMNS]) {
             if(sequentialLines > maxSequentialLines)
                 maxSequentialLines = sequentialLines;
             initializeRow(board[i]);
+            
+            for(int j = i; j > 0; j--) { //Move rows up
+                swapRows(board[j], board[j - 1]);
+            }
         }
         else 
             sequentialLines = 0;
@@ -351,4 +356,14 @@ bool isFullLine(char line[COLUMNS]) {
             return false;
     }
     return true;
+}
+
+int swapRows(char firstRow[COLUMNS], char secondRow[COLUMNS]) {
+    char temp;
+    for(int i = 0; i < COLUMNS; i++) {
+        temp = firstRow[i];
+        firstRow[i] = secondRow[i];
+        secondRow[i] = temp;
+    }
+    return 0;
 }
