@@ -11,9 +11,13 @@
 #define ROWS 21
 #define COLUMNS 13
 #define TIC_RATE 0.25f
+#define NEXT_PREVIEW_ROWS 5
+#define NEXT_PREVIEW_COLS 5
 
-int initialize(char board[ROWS][COLUMNS]);
+int initialize(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS]);
 int initializeBoard(char board[ROWS][COLUMNS]);
+int initializeNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS]);
+int updateNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], Piece piece);
 int drawBoard(char board[ROWS][COLUMNS], int score);
 bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector);
 bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector);
@@ -27,6 +31,7 @@ int main() {
     }
 
     char board[ROWS][COLUMNS];
+    char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS];
     int score = 0;
     Vector2 blockSpawnPoint;
     blockSpawnPoint.x = (COLUMNS - 2) / 2;
@@ -44,7 +49,7 @@ int main() {
     Piece nextPiece;
     Piece currentPiece;
 
-    initialize(board);
+    initialize(board, nextPreview);
 
     nextIndex = getNextNode(&pieceOrder);
     if(nextIndex == NULL) {
@@ -113,8 +118,9 @@ int main() {
     return 0;
 }
 
-int initialize(char board[ROWS][COLUMNS]) {
+int initialize(char board[ROWS][COLUMNS], char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS]) {
     initializeBoard(board);
+    initializeNextPreview(nextPreview);
     initializePieces();
     return 0;
 }
@@ -145,6 +151,24 @@ int initializeBoard(char board[ROWS][COLUMNS]) {
         }
     }
 
+    return 0;
+}
+
+int initializeNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS]) {
+    for(int i = 0; i < NEXT_PREVIEW_ROWS; i++) {
+        for(int j = 0; j < NEXT_PREVIEW_COLS - 1; j++) {
+            nextPreview[i][j] = '-';
+        }
+        nextPreview[i][NEXT_PREVIEW_COLS - 1] = '\0';
+    }
+    return 0;
+}
+
+int updateNextPreview(char nextPreview[NEXT_PREVIEW_ROWS][NEXT_PREVIEW_COLS], Piece piece) {
+    initializeNextPreview(nextPreview);
+    for(int i = 0; i < 4; i++) {
+        nextPreview[2 + piece.squares[i].y][1 + piece.squares[i].x] = 'X';
+    }
     return 0;
 }
 
