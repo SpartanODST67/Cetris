@@ -292,11 +292,12 @@ bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection) {
 }
 
 bool canSpawnPiece(char board[ROWS][COLUMNS], Piece piece) {
+    Vector2 targetPosition;
     for(int i = 0; i < 4; i++) {
-        if(board[piece.center.y + piece.squares[i].y][piece.center.x + piece.squares[i].x] != ' ') {
-            if(board[piece.center.y + piece.squares[i].y][piece.center.x + piece.squares[i].x] != 'X')
-                return false;
-        }
+        targetPosition.x = piece.center.x + piece.squares[i].x;
+        targetPosition.y = piece.center.y + piece.squares[i].y;
+        if(isPositionTaken(board, targetPosition))
+            return false;
     }
     return true;
 }
