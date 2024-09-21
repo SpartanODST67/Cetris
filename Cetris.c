@@ -39,17 +39,20 @@ int main() {
     int rotationInput;
     int inputRotation;
     Vector2 zero = {0, 0};
-    Node* nextIndex = getNextNode(&pieceOrder);
+    Node* nextIndex;
+
+    Piece nextPiece;
+    Piece currentPiece;
+
+    initialize(board);
+
+    nextIndex = getNextNode(&pieceOrder);
     if(nextIndex == NULL) {
         destroyLinkedList(&pieceOrder);
         fprintf(stderr, "Failed to get node from linked list.\n");
         return -1;
     }
-
-    Piece nextPiece = pieces[nextIndex->value];
-    Piece currentPiece;
-
-    initialize(board);
+    nextPiece = pieces[nextIndex->value];
 
     while(1) {
         //printf("\e[1;1H\e[2J"); //Clear screen;
