@@ -3,6 +3,7 @@
 #include <strings.h>
 #include <windows.h>
 #include <stdbool.h>
+#include <conio.h>
 
 #include "vector2.h"
 #include "pieces.h"
@@ -44,7 +45,6 @@ int main() {
     const Vector2 down = {0, 1};
     int directionInput;
     Vector2 inputDirection;
-    int rotationInput;
     int inputRotation;
     Vector2 zero = {0, 0};
     Node* nextIndex;
