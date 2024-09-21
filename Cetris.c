@@ -215,11 +215,12 @@ bool movePiece(char board[ROWS][COLUMNS], Piece* piece, Vector2 movementVector) 
 }
 
 bool canMove(char board[ROWS][COLUMNS], Piece piece, Vector2 movementVector) {
+    Vector2 targetPosition;
     for(int i = 0; i < 4; i++) {
-        if(board[piece.center.y + piece.squares[i].y + movementVector.y][piece.center.x + piece.squares[i].x + movementVector.x] != ' ') {
-            if(board[piece.center.y + piece.squares[i].y + movementVector.y][piece.center.x + piece.squares[i].x + movementVector.x] != 'X')
-                return false;   
-        }
+        targetPosition.x = piece.center.x + piece.squares[i].x + movementVector.x;
+        targetPosition.y = piece.center.y + piece.squares[i].y + movementVector.y;
+        if(isPositionTaken(board, targetPosition))
+            return false;
     }
     return true;
 }
