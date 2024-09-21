@@ -1,12 +1,12 @@
 # Cetris
-Tetris made in C and runs in powershell.\n
+Tetris made in C and runs in powershell.<br>
 Controls
 - A: Move left.
 - D: Move right.
 - Q: Move counter clockwise.
 - E: Move clockwise.
 
-After running ./makefile.ps1, run ./Cetris.exe.\n
-Epilepsy Warning: The game repeatedly writes and clears the console which makes an obvious flickering effect.\n\n
+After running ./makefile.ps1, run ./Cetris.exe.<br>
+Epilepsy Warning: The game repeatedly writes and clears the console which makes an obvious flickering effect.<br><br>
 
 I might come back and update the game to include holding pieces, soft and hard drop, and improve overall performance and quality. However, this was just a short little distraction because I had a short little idea.
