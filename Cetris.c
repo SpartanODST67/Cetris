@@ -10,7 +10,7 @@
 
 #define ROWS 21
 #define COLUMNS 13
-#define TIC_RATE 0.25f
+#define TIC_RATE (1.0f/20.0f)
 #define NEXT_PREVIEW_ROWS 5
 #define NEXT_PREVIEW_COLS 5
 
@@ -44,6 +44,8 @@ int main() {
     blockSpawnPoint.x = (COLUMNS - 2) / 2;
     blockSpawnPoint.y = 1;
     bool spawnedBlock = false;
+    u_int ticks = 0;
+    int dropTick = 20;
 
     const Vector2 down = {0, 1};
     int playerInput;
@@ -66,7 +68,7 @@ int main() {
     nextPiece = pieces[nextIndex->value];
 
     while(1) {
-        //printf("\e[1;1H\e[2J"); //Clear screen;
+        printf("\e[1;1H\e[2J"); //Clear screen;
         
         //Spawn piece
         if(!spawnedBlock) {
@@ -114,16 +116,18 @@ int main() {
             }
 
             //Move piece down.
-            if(!movePiece(board, &currentPiece, down)) { //Piece cannot be moved down.
-                for(int i = 0; i < 4; i++) {
-                    board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'Z';
-                }
-                score += scorePoints(board);
-                spawnedBlock = false;
+            if(ticks % dropTick == 0)
+                if(!movePiece(board, &currentPiece, down)) { //Piece cannot be moved down.
+                    for(int i = 0; i < 4; i++) {
+                        board[currentPiece.center.y + currentPiece.squares[i].y][currentPiece.center.x + currentPiece.squares[i].x] = 'Z';
+                    }
+                    score += scorePoints(board);
+                    spawnedBlock = false;
             }
         }
         drawBoard(board, nextPreview, score);
         Sleep(TIC_RATE * 1000);
+        ticks++;
     }
 
     destroyLinkedList(&pieceOrder);
