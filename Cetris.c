@@ -251,30 +251,15 @@ bool rotatePiece(char board[ROWS][COLUMNS], Piece* piece, int rotationDirection)
 bool canRotate(char board[ROWS][COLUMNS], Piece piece, int rotationDirection) {
     if(rotationDirection == 0) //If you're not going to rotate, why are your calling this?
         return false;
+
+    rotate(&piece, rotationDirection);
     
-    if(rotationDirection > 0) {
-        for(int i = 0; i < 4; i++) {
-            int temp = piece.squares[i].x;
-            piece.squares[i].x = piece.squares[i].y * -1;
-            piece.squares[i].y = temp;
-            char targetPosition = board[piece.center.y + piece.squares[i].y][piece.center.x + piece.squares[i].x];
-            if(targetPosition != 'X') {
-                if(targetPosition != ' ')
-                    return false;
-            }
-        }
-    }
-    else {
-        for(int i = 0; i < 4; i++) {
-            int temp = piece.squares[i].x;
-            piece.squares[i].x = piece.squares[i].y;
-            piece.squares[i].y = temp * -1;
-            char targetPosition = board[piece.center.y + piece.squares[i].y][piece.center.x + piece.squares[i].x];
-            if(targetPosition != 'X') {
-                if(targetPosition != ' ')
-                    return false;
-            }
-        }
+    Vector2 targetPosition;
+    for(int i = 0; i < 4; i++) {
+        targetPosition.x = piece.center.x + piece.squares[i].x;
+        targetPosition.y = piece.center.y + piece.squares[i].y;
+        if(isPositionTaken(board, targetPosition))
+            return false;
     }
     return true;
 }
